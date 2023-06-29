@@ -1,0 +1,54 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: a website hosted in AWS S3
+
+Parameters:
+    Env:
+      Type: String
+      Default: dev
+    BucketName:
+      Type: String
+      Default: udacity-project
+
+Resources:
+  S3Bucket:
+    Type: AWS::S3::Bucket
+    Properties: 
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: false
+        BlockPublicPolicy: false
+        IgnorePublicAcls: false
+        RestrictPublicBuckets: false
+      BucketName: !Join
+        - "-"
+        - - !Ref "AWS::StackName"
+          - "udacity"
+          - !Ref Env
+      VersioningConfiguration: 
+         Status: Enabled
+      WebsiteConfiguration: 
+        IndexDocument: index.html
+        ErrorDocument: error.html
+      Tags:
+        - Key: env
+          Value: !Ref Env
+
+  S3BucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref S3Bucket
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Action:
+              - "s3:GetObject"
+            Effect: Allow
+            Resource: !Sub "arn:aws:s3:::${S3Bucket}/*"
+            Principal: "*"
+    DependsOn:
+      - S3Bucket
+    
+Outputs:
+  WebSiteURL:
+    Value: !GetAtt
+      - S3Bucket
+      - WebsiteURL

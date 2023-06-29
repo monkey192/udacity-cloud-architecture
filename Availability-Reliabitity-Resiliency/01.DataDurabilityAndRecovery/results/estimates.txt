@@ -1,0 +1,15 @@
+1. Minimum RTO for a single AZ outage
+    With multi-AZ configured RDS, Database is replicated synchronously to stanby replica located in a difference AZ within Region. The standby replica works a failover target whenever the primary db becomes outage.
+    
+2. Minimum RTO for a single region outage
+    with multi-region configured RDS, the RTO purpose is how to minimine time to restore DB availability as quick as possible when one of region becomes outage.
+    the failover process involes a standby replica in another region to become a primary databae and updates DNS for redirecting traffic to new DB primary database.
+
+3. Minimum RPO for a single AZ outage.
+    
+    when a single AZ outage, the failover process is automatically triggered, and route traffic to standby db. 
+    the standby replica contains the most recent and consistent data at the time of the failure because DB will be replicated synchronously.
+
+4. Minimum RPO for a single region outage.
+    Data will be replicated asynchronously between regions.
+    The RPO represents the maximum acceptable amount of data loss during a failure. In the case of a single region outage, where the primary region becomes unavailable, the RPO is determined by the amount of data that was not yet replicated to the standby replicas at the time of the outage.

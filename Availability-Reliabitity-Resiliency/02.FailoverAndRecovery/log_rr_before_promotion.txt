@@ -1,0 +1,44 @@
+mysql -h udacity-readreplica.c5rsm4delyo7.us-west-2.rds.amazonaws.com -u admin -p
+Enter password:
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 33
+Server version: 8.0.32 Source distribution
+
+Copyright (c) 2000, 2023, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
+| udacity            |
++--------------------+
+5 rows in set (0.01 sec)
+
+mysql> use udactity;
+ERROR 1049 (42000): Unknown database 'udactity'
+mysql> use udacity;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> select * from Persons;
++----------+----------+-----------+---------+------+
+| PersonID | LastName | FirstName | Address | City |
++----------+----------+-----------+---------+------+
+|       10 | Mad      | Jonh      | Tokyo   | Ota  |
++----------+----------+-----------+---------+------+
+1 row in set (0.00 sec)
+
+mysql> insert into Persons values(20, "Mask", "Edu", "Newyork", "112A");
+ERROR 1290 (HY000): The MySQL server is running with the --read-only option so it cannot execute this statement
+mysql>
