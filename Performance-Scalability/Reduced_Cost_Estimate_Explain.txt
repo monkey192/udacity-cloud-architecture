@@ -1,0 +1,2 @@
+🔹 for WebServer, Application Server (EC2 service)
+Instead of using "On-Demand" payment option, I changed to "EC2 Instance Savings Plans".

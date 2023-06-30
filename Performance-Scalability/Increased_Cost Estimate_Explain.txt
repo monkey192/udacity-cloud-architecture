@@ -1,0 +1,28 @@
+﻿### For security and monitoring
+- NAT gateway
+  in public subnets. i add a NAT gatway foreach subnet for HA purpose
+  the instances in private subnets can connect to services outside our VPC. to update OS, apply patch ...
+
+- AWS Web Application Firewall (WAF)
+    to project against web-based attacks in Elastic Load balancer , CloudFront
+- Amazon Route 53
+    - instead of using unfriendly (hard to remember) URL of ELB or CloudFront distrubution.
+    add route53 to register a friendly URL
+    - Heath Check and monitoring: use in Disaster Recovery (as below)
+- Amazon CloudWatch
+    - to monitor the workload
+    - alarm (send notification) when there is an issue in the workload 
+- Amazon Simple Storage Service (S3)
+    - S3 for saving log
+    - instead of saving Intances, AWS services logs onto cloudwatch, we can develiry log into S3 for long term duration or audit
+- AWS Shield
+    - Maximize application availability and responsiveness with managed DDoS protection
+
+### Althougt this system is used by signle-region users, to prepare for Disaster Recovery(DR),
+i think, we should create a Warm Standby workload in another region.
+the warm standby workload always run with smaller
+with the above solution, Services are added as below in another region (e.g: US West (Oregon)):
+- Amazon RDS for MySQL
+- Elastic Load Balancing
+- Amazon EC2 (For WebServer)
+- Amazon EC2 (For Application Server)
