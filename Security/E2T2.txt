@@ -1,0 +1,11 @@
+1/ Security Hub > Security standards> CIS AWS Foundations Benchmark v1.2.0> EC2.14
+### Detail:
+    Ensure no security groups allow ingress from 0.0.0.0/0 to port 3389
+
+### Target: WebAppSG security group
+
+### Why:
+    CIS recommends that no security group allow unrestricted ingress access to port 3389. Removing unfettered connectivity to remote console services, such as RDP, reduces a server's exposure to risk.
+
+### How to remediate
+remove "All traffic" rule

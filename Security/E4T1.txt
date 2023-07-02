@@ -1,0 +1,8 @@
+# Identify 2-3 changes that can be made to our environment to prevent an ssh brute force attack from the internet.
+1) Remove rule "Allow access port 22" in WebAppSG
+2) Remove rule "Allow All traffic" in WebAppSG
+
+# Neither instance should have had access to the secret recipes bucket, in the even that instance API credentials were compromised how could we have prevented access to sensitive data.
+
+According to "Least privilege" practice, We should consider carefully what role does the application need/ which S3 Bucket the application need to access, then define properly role.
+In this system, it's enough to Get Object from "Free Recipe" S3 bucket.

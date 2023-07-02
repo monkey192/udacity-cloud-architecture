@@ -1,0 +1,21 @@
+Based on the architecture diagram, and the steps you have taken so far to upload data and access the application web service, identify at least 2 obvious poor practices as it relates to security.  Include justification.
+
+# Poor practice 1
+- for Web Service Instance:
+    - Clients will request access to "Web Service Instance" through "Application Load Balancer",
+    So, if there is no special reason, "Web Service Instance" should be sit on private subnet instead of public subnet.
+    we can avoid attacking from the internet.
+
+# Poor practice 2
+- accessing to "Free Recipes" bucket
+instead of going through the internet when we accessing S3 bucket, we should use "VPC Endpoint" to make a connection line with S3 in this case.
+Some benifits when we refactor to using "S3 VPC Endpoint"
++ Improved Security: the traffics between our VPC and S3 do not go over the internet. So it elimenates the exposure of data to the public internet
++ Enhanced Performance
++ Cost Optimazation: Since traffic between our VPC and S3 doesn't traverse the public internet, we can save cost for data transfer
+...
+
+# Poor practice 3
+- "InstanceRolePolicy-C3" is not "Least Privilege Access"
+the InstanceRolePolicy-C3 role allows "All S3 Acction" to "All S3 bucket", that sounds bad.
+we should follow "least privileged" best practice and consider what role our application need.

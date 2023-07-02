@@ -1,0 +1,68 @@
+# Identify tools that will allow you to do the following:
+## Scan infrastructure as code templates
+checkov
+### Example vulnerability
+Refer: https://www.checkov.io/1.Welcome/Quick%20Start.html
+i ran for this project's IaC.
+```sh
+checkov -d ./
+
+
+[ kubernetes framework ]: 100%|████████████████████|[3/3], Current File Scanned=c3-app.yml
+[ secrets framework ]: 100%|████████████████████|[3/3], Current File Scanned=./c3-app.yml
+[ cloudformation framework ]: 100%|████████████████████|[3/3], Current File Scanned=/c3-app.yml
+
+...
+Check: CKV_AWS_24: "Ensure no security groups allow ingress from 0.0.0.0:0 to port 22"
+        FAILED for resource: AWS::EC2::SecurityGroup.AttackInstanceSG
+        File: /c3-app.yml:152-165
+        Guide: https://docs.paloaltonetworks.com/content/techdocs/en_US/prisma/prisma-cloud/prisma-cloud-code-security-policy-reference/aws-policies/aws-networking-policies/networking-1-port-security.html
+
+                152 |   AttackInstanceSG:
+                153 |     Type: AWS::EC2::SecurityGroup
+                154 |     Properties:
+                155 |       GroupName: AttackInstanceSG
+                156 |       GroupDescription: "Security group for the attack instance"
+                157 |       SecurityGroupEgress:
+                158 |       - IpProtocol: -1
+                159 |         CidrIp: 0.0.0.0/0
+                160 |       SecurityGroupIngress:
+                161 |       - IpProtocol: tcp
+                162 |         FromPort: 22
+                163 |         ToPort: 22
+                164 |         CidrIp: 0.0.0.0/0
+                165 |       VpcId: !ImportValue VpcId
+...
+```
+
+##Scan AMI’s or containers for OS vulnerabilities
+trivy
+### Example vulnerability
+```
+445558539f6f (alpine 3.7.3)
+===========================
+Total: 2 (UNKNOWN: 0, LOW: 0, MEDIUM: 0, HIGH: 0, CRITICAL: 2)
+
++------------+------------------+----------+-------------------+---------------+--------------------------------+
+|  LIBRARY   | VULNERABILITY ID | SEVERITY | INSTALLED VERSION | FIXED VERSION |             TITLE              |
++------------+------------------+----------+-------------------+---------------+--------------------------------+
+| musl       | CVE-2019-14697   | CRITICAL | 1.1.18-r3         | 1.1.18-r4     | musl libc through 1.1.23       |
+|            |                  |          |                   |               | has an x87 floating-point      |
+|            |                  |          |                   |               | stack adjustment imbalance,    |
+|            |                  |          |                   |               | related...                     |
++------------+                  +          +                   +               +                                +
+| musl-utils |                  |          |                   |               |                                |
+|            |                  |          |                   |               |                                |
+|            |                  |          |                   |               |                                |
+|            |                  |          |                   |               |                                |
++------------+------------------+----------+-------------------+---------------+--------------------------------+
+```
+
+##Scan an AWS environment for cloud configuration vulnerabilities
+AWS Config, AWS SecurityHub
+### Example vulnerability
+- AWS Config: restricted-ssh
+https://docs.aws.amazon.com/config/latest/developerguide/restricted-ssh.html
+
+- SecurityHub [EC2.6] VPC flow logging should be enabled in all VPCs
+https://docs.aws.amazon.com/securityhub/latest/userguide/ec2-controls.html#ec2-6

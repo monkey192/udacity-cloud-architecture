@@ -1,0 +1,15 @@
+# Describe GuardDuty findings that were detected related to the brute force attack
+1) UnauthorizedAccess:EC2/SSHBruteForce
+AttackInstance is performing SSH brute force attacks against "ApplicationInstance". Brute force attacks are used to gain unauthorized access to your instance by guessing the SSH password
+
+2) Recon:EC2/PortProbeUnprotectedPort
+EC2 instance (ApplicationInstance) has an unprotected port which is being probed by a known malicious host. 
+Detail: 
+ApplicationInstance opens port 5000, without setting any restricted on it.
+So Scanners on the internet are actively probing it.
+
+# Research the AWS Guard Duty documentation page and explain how GuardDuty may have detected this attack - i.e. what was its source of information.
+
+AWS GuardDuty analyzes and processes Foundational data sources, such as AWS CloudTrail management events, AWS CloudTrail event logs, VPC flow logs (from Amazon EC2 instances), and DNS logs.
+in this system, VPC flow is enable. AWS GuardDuty analyzes VPC flow logs and detect the above findings
+
